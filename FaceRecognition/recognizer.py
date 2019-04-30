@@ -1,6 +1,19 @@
 import cv2
 import numpy as np
 import os 
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+####DATABASE
+scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+client = gspread.authorize(creds)
+sheet = client.open("Spice Face").sheet1
+
+sheet.update_cell(1, 1, "I just wrote to a spreadsheet using Python!")
+
+
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('trainer/trainer.yml')
@@ -21,8 +34,8 @@ cam.set(3, 640) # set video widht
 cam.set(4, 480) # set video height
 
 # Define min window size to be recognized as a face
-minW = 0.1*cam.get(3)
-minH = 0.1*cam.get(4)
+minW = 0.*cam.get(3)
+minH = 0.3*cam.get(4)
 
 while True:
 
@@ -44,7 +57,7 @@ while True:
         id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
 
         # Check if confidence is less them 100 ==> "0" is perfect match 
-        if (confidence < 100):
+        if (confidence < 60):
             id = names[id]
             confidence = "  {0}%".format(round(100 - confidence))
         else:
