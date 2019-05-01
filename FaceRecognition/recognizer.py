@@ -9,11 +9,12 @@ scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 client = gspread.authorize(creds)
-sheet = client.open("Spice Face").sheet1
+sheet = client.open("Spice Face").worksheet("Szymon")
+sheet2 = client.open("Spice Face").add_worksheet("Mateusz", 10, 10)
+#sheet = client.open("Spice Face").get_worksheet(2)
 
-sheet.update_cell(1, 1, "I just wrote to a spreadsheet using Python!")
-
-
+sheet.update_cell(1, 2, "Spajsyyyy!")
+###################
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('trainer/trainer.yml')
